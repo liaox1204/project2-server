@@ -1,3 +1,4 @@
+
 name: Deploy Trigger Server
 
 on:
@@ -15,7 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-
       # 2. 打包后端代码
       - name: Package backend
         run: |
@@ -31,7 +31,6 @@ jobs:
             -C "$GITHUB_WORKSPACE" .
 
           cp /tmp/deploy.tar.gz "$GITHUB_WORKSPACE/deploy.tar.gz"
-
 
       # 3. 上传代码包到服务器
       - name: Upload backend
@@ -64,8 +63,8 @@ jobs:
 
             .venv/bin/pip install -r requirements.txt
 
-           systemctl restart trigger-api.service
+            systemctl restart trigger-api.service
 
-           systemctl is-active trigger-api.service
+            systemctl is-active trigger-api.service
 
             rm -f /tmp/deploy.tar.gz
