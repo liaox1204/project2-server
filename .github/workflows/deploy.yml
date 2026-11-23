@@ -15,12 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 打包后端代码（复制到独立临时目录打包，解决tar文件变更报错）
+      # 2. 打包后端代码
+
+      # 2. 打包后端代码
       - name: Package backend
         run: |
-          mkdir -p /tmp/build
-          cp -r . /tmp/build
-          cd /tmp/build
           tar -zcf deploy.tar.gz \
             --exclude=".git" \
             --exclude=".github" \
@@ -30,8 +29,7 @@ jobs:
             --exclude="*.log" \
             --exclude=".env" \
             .
-          # 把压缩包拷贝回github工作目录，供scp上传
-          cp deploy.tar.gz $GITHUB_WORKSPACE/
+      
 
       # 3. 上传代码包到服务器
       - name: Upload backend
