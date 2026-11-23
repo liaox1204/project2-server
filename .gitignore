@@ -1,0 +1,30 @@
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# Python 虚拟环境
+.venv/
+venv/
+
+# 环境变量
+.env
+.env.*
+!.env.example
+
+# IDE 配置
+.idea/
+.vscode/
+
+# 日志
+logs/
+*.log
+
+# 上传文件
+uploads/
+
+# 临时文件
+*.tmp
+.DS_Store
+
+# 本地 AI 工具配置
+.workbuddy/
