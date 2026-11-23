@@ -64,8 +64,8 @@ jobs:
 
             .venv/bin/pip install -r requirements.txt
 
-            systemctl restart project2-api.service
+           systemctl restart trigger-api.service
 
-            systemctl is-active project2-api.service
+           systemctl is-active trigger-api.service
 
             rm -f /tmp/deploy.tar.gz
