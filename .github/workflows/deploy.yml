@@ -1,6 +1,4 @@
-
 name: Deploy Trigger Server
-
 on:
   push:
     branches:
@@ -10,7 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       # 1. 拉取后端代码
       - name: Checkout code
@@ -19,16 +16,17 @@ jobs:
       # 2. 打包后端代码
       - name: Package backend
         run: |
-          tar \
-            --exclude=.git \
-            --exclude=.github \
-            --exclude=.venv \
-            --exclude=.env \
-            --exclude=__pycache__ \
-            --exclude=*.pyc \
-            --exclude=deploy.tar.gz \
-            -czf deploy.tar.gz .
-
+          mkdir -p /tmp/build
+          cp -r . /tmp/build
+          cd /tmp/build
+          tar -zcf deploy.tar.gz \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude="__pycache__" \
+            --exclude="*.log" \
+            .
+          # 把压缩包复制到当前工作目录，供scp读取
+          cp deploy.tar.gz $GITHUB_WORKSPACE/
 
       # 3. 上传代码包到服务器
       - name: Upload backend
@@ -52,16 +50,10 @@ jobs:
           port: 22
           script: |
             mkdir -p /root/project2Server
-
             tar -xzf /tmp/deploy.tar.gz \
               -C /root/project2Server
-
             cd /root/project2Server
-
             .venv/bin/pip install -r requirements.txt
-
             systemctl restart project2-api.service
-
             systemctl is-active project2-api.service
-
             rm -f /tmp/deploy.tar.gz
