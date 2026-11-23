@@ -15,12 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 打包后端代码
 
       # 2. 打包后端代码
       - name: Package backend
         run: |
-          tar -zcf deploy.tar.gz \
+          mkdir -p /tmp/build
+          tar -czf /tmp/deploy.tar.gz \
             --exclude=".git" \
             --exclude=".github" \
             --exclude=".venv" \
@@ -28,8 +28,10 @@ jobs:
             --exclude="__pycache__" \
             --exclude="*.log" \
             --exclude=".env" \
-            .
-      
+            -C "$GITHUB_WORKSPACE" .
+
+          cp /tmp/deploy.tar.gz "$GITHUB_WORKSPACE/deploy.tar.gz"
+
 
       # 3. 上传代码包到服务器
       - name: Upload backend
